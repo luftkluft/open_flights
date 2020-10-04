@@ -1,6 +1,7 @@
 module Api
   module V1
     class AirlinesController < ApiController
+      protect_from_forgery with: :null_session
       # GET /api/v1/airlines
       def index
         render json: serializer(airlines, options)
@@ -49,14 +50,22 @@ module Api
         @options ||= { include: %i[reviews] }
       end
 
-      # Get all airlines
+      # # Get all airlines
+      # def airlines
+      #   @airlines ||= Airline.includes(reviews: :user).all
+      # end
+
       def airlines
-        @airlines ||= Airline.includes(reviews: :user).all
+        @airlines ||= Airline.all
       end
 
-      # Get a specific airline
+      # # Get a specific airline
+      # def airline
+      #   @airline ||= Airline.includes(reviews: :user).find_by(slug: params[:slug])
+      # end
+
       def airline
-        @airline ||= Airline.includes(reviews: :user).find_by(slug: params[:slug])
+        @airline ||= Airline.find_by(slug: params[:slug])
       end
 
       # Strong params
