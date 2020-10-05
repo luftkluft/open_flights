@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link } from 'react-router-dom'
 const Card = styled.div`
   border: 1px solid #efefef;
   background: #fff;
+  padding-top: 20px;
 `
 
 const AirlineLogo = styled.div`
