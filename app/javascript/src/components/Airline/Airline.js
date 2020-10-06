@@ -18,15 +18,26 @@ const Airline = (props) => {
       })
       .catch(resp => console.log(resp))
   }, [])
+
+  if (loaded) {
   return (
     <div>
       {
-        {loaded} &&
-        <Header />
+        <Header
+          attributes={airline.data}
+          reviews={airline.included}
+        />
       }
       <ReviewForm />
     </div>
   )
+  }else{
+    return (
+      <div>
+        Airline Loading...
+      </div>
+    )
+  }
 }
 
 export default Airline
