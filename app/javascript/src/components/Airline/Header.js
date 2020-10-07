@@ -36,7 +36,7 @@ const Header = (props) => {
       <h1><img src={image_url} height="50" width="50" alt={name} /> {name}</h1>
       <div>
       <UserReviewCount><span className="review-count">{reviewCount}</span> user reviews</UserReviewCount>
-        <Rating />
+        <Rating score={avg_score} />
         <ScoreOutOf> {avg_score} stars of 5</ScoreOutOf>
       </div>
     </Wrapper>
