@@ -32,9 +32,15 @@ const Main = styled.div`
   padding-left: 60px;
 `
 
+  // set score
+  const setRating = (score, e) => {
+    e.preventDefault()  
+    setReview({ ...review, score })
+  }
+
 const Airline = (props) => {
   const [airline, setAirline] = useState({})
-  const [review, setReview] = useState({})
+  const [review, setReview] = useState({title: '', description: '', score: 0})
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
@@ -85,6 +91,7 @@ const Airline = (props) => {
             review={review}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            setRating={setRating}
              />
         </Column>
       </Wrapper>
