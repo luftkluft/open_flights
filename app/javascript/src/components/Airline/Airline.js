@@ -51,6 +51,8 @@ const Airline = (props) => {
   const handleChange = (e) => {
     e.preventDefault()
     console.log('name:', e.target.name, 'value:', e.target.value)
+    setReview(Object.assign({}, review, {[e.target.name]: e.target.value}))
+    console.log('review:', review)
   }
 
   if (loaded) {
