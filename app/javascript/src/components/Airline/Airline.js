@@ -32,15 +32,10 @@ const Main = styled.div`
   padding-left: 60px;
 `
 
-  // set score
-  const setRating = (score, e) => {
-    e.preventDefault()  
-    setReview({ ...review, score })
-  }
 
 const Airline = (props) => {
   const [airline, setAirline] = useState({})
-  const [review, setReview] = useState({title: '', description: '', score: 0})
+  const [review, setReview] = useState({})
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
@@ -56,7 +51,7 @@ const Airline = (props) => {
 
   const handleChange = (e) => {
     e.preventDefault()
-    setReview(Object.assign({}, review, {[e.target.name]: e.target.value}))
+    setReview(Object.assign({}, review, { [e.target.name]: e.target.value }))
   }
 
   const handleSubmit = (e) => {
@@ -65,13 +60,19 @@ const Airline = (props) => {
     console.log(csrfToken)
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
     const airline_id = airline.data.id
-    axios.post('/api/v1/reviews', {review, airline_id})
-    .then(resp => {
-      const included = [... airline.included, resp.data]
-      setAirline([...airline, included])
-      setReview({title: '', description: '', score: 0})
-    })
-    .catch(resp => {})
+    axios.post('/api/v1/reviews', { review, airline_id })
+      .then(resp => {
+        const included = [...airline.included, resp.data]
+        setAirline([...airline, included])
+        setReview({ title: '', description: '', score: 0 })
+      })
+      .catch(resp => { })
+  }
+
+  // set score
+  const setRating = (score, e) => {
+    e.preventDefault()
+    setReview({ ...review, score })
   }
 
   if (loaded) {
@@ -92,7 +93,7 @@ const Airline = (props) => {
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             setRating={setRating}
-             />
+          />
         </Column>
       </Wrapper>
     )
