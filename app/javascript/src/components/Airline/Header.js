@@ -27,9 +27,9 @@ const ScoreOutOf = styled.div`
 `
 
 const Header = (props) => {
-  const name = props.attributes.attributes.name
-  const image_url = props.attributes.attributes.image_url
-  const avg_score = props.attributes.attributes.avg_score
+  const name = props.attributes.name
+  const image_url = props.attributes.image_url
+  const avg_score = props.attributes.avg_score
   const reviewCount = props.reviews.length
   return (
     <Wrapper>

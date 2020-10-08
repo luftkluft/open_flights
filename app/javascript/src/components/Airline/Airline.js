@@ -54,7 +54,7 @@ const Airline = (props) => {
         <Column>
           <Main>
             <Header
-              attributes={airline.data}
+              attributes={airline.data.attributes}
               reviews={airline.included}
             />
           </Main>
