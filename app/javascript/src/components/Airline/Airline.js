@@ -48,6 +48,11 @@ const Airline = (props) => {
       .catch(resp => console.log(resp))
   }, [])
 
+  const handleChange = (e) => {
+    e.preventDefault()
+    console.log('name:', e.target.name, 'value:', e.target.value)
+  }
+
   if (loaded) {
     return (
       <Wrapper>
@@ -60,14 +65,17 @@ const Airline = (props) => {
           </Main>
         </Column>
         <Column>
-          <ReviewForm />
+          <ReviewForm
+            attributes={airline.data.attributes}
+            review={review}
+            handleChange={handleChange} />
         </Column>
       </Wrapper>
     )
   } else {
     return (
       <Wrapper>
-            <h3>Airline Loading...</h3>
+        <h3>Airline Loading...</h3>
       </Wrapper>
     )
   }
