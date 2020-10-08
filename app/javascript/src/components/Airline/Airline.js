@@ -89,7 +89,6 @@ const Airline = (props) => {
     })
   }
 
-
   if (loaded) {
     return (
       <Wrapper>
