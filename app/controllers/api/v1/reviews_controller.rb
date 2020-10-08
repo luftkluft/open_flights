@@ -1,9 +1,11 @@
 module Api
   module V1
     class ReviewsController < ApiController
+      # protect_from_forgery with: :null_session
       # POST /api/v1/reviews
       def create
-        review = current_user.reviews.new(review_params)
+        # REVIEW: = current_user.reviews.new(review_params)
+        review = airline.reviews.new(review_params)
 
         if review.save
           render json: serializer(review)
@@ -24,6 +26,10 @@ module Api
       end
 
       private
+
+      def airline
+        @airline ||= Airline.find(params[:airline_id])
+      end
 
       # Strong params
       def review_params
