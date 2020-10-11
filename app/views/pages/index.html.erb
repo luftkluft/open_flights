@@ -1,0 +1,23 @@
+<nav class="navbar navbar-dark bg-dark">
+  <% if user_signed_in? %>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= current_user.email %>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <%= button_to "logout", destroy_user_session_path, class: "dropdown-item", method: :delete %>
+      <a class="dropdown-item" href="/users/edit">Account</a>
+    </div>
+  </div>
+  <% else %>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Enter
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="/users/sign_in">Sign In</a>
+      <a class="dropdown-item" href="/users/sign_up">Sign Up</a>
+    </div>
+  </div>
+  <% end %>
+</nav>

@@ -36,19 +36,17 @@ const Airline = (props) => {
   const [airline, setAirline] = useState({})
   const [review, setReview] = useState({})
   const [loaded, setLoaded] = useState(false)
-  const [slugState, setSlugState] = useState('')
 
   useEffect(() => {
     const slug = props.match.params.slug
     const url = `/api/v1/airlines/${slug}`
-    setSlugState(slug)
     axios.get(url)
       .then(resp => {
         setAirline(resp.data)
         setLoaded(true)
       })
       .catch(resp => console.log('Error', resp))
-  }, [])
+  }, [loaded])
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -57,6 +55,7 @@ const Airline = (props) => {
 
   // create review
   const handleSubmit = (e) => {
+    setLoaded(false)
     e.preventDefault()
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
@@ -66,9 +65,9 @@ const Airline = (props) => {
         const included = [...airline.included, resp.data]
         setAirline([...airline, included])
         setReview({ title: '', description: '', score: 0 })
+        setLoaded(true)
       })
-      .catch(resp => console.log('Error', resp))
-    location.href = `/airlines/${slugState}`
+      .catch(resp => { })
   }
 
   // set score
@@ -79,14 +78,15 @@ const Airline = (props) => {
 
   // destroy review
   const handleDestroy = (id, e) => {
+    setLoaded(false)
     e.preventDefault()
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
     axios.delete(`/api/v1/reviews/${id}`)
       .then((resp) => {
-        location.href = `/airlines/${slugState}`
+        setLoaded(true)
       })
-      .catch(data => console.log('Error', resp))
+      .catch(resp => { })
   }
 
   let airlineReviews
@@ -103,37 +103,36 @@ const Airline = (props) => {
     })
   }
 
-  if (loaded) {
-    return (
-      <Wrapper>
-        <Column>
-          <Main>
-            <Header
-              attributes={airline.data.attributes}
-              reviews={airline.included}
-            />
-            {airlineReviews}
-          </Main>
-
-        </Column>
-        <Column>
-          <ReviewForm
-            attributes={airline.data.attributes}
-            review={review}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            setRating={setRating}
-          />
-        </Column>
-      </Wrapper>
-    )
-  } else {
+  if (!loaded) {
     return (
       <Wrapper>
         <h3>Airline Loading...</h3>
       </Wrapper>
     )
   }
+
+  return (
+    <Wrapper>
+      <Column>
+        <Main>
+          <Header
+            attributes={airline.data.attributes}
+            reviews={airline.included}
+          />
+          {airlineReviews}
+        </Main>
+      </Column>
+      <Column>
+        <ReviewForm
+          attributes={airline.data.attributes}
+          review={review}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          setRating={setRating}
+        />
+      </Column>
+    </Wrapper>
+  )
 }
 
 export default Airline
