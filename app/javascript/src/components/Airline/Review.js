@@ -70,7 +70,7 @@ const Review = (props) => {
     <div>
       <Card>
         <RatingContainer>
-        <Rating score={attributes.score} />
+          <Rating score={attributes.score} />
         </RatingContainer>
         <Title>
           {attributes.title}
@@ -78,6 +78,10 @@ const Review = (props) => {
         <Description>
           {attributes.description}
         </Description>
+        <Options>
+          <Icon> <i className="fa fa-pencil"></i></Icon>
+          <Icon onClick={props.handleDestroy.bind(this, props.id)}> <i className="fa fa-trash"></i></Icon>
+        </Options>
       </Card>
     </div>
   )

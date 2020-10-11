@@ -55,10 +55,10 @@ const Airline = (props) => {
     setReview(Object.assign({}, review, { [e.target.name]: e.target.value }))
   }
 
+  // create review
   const handleSubmit = (e) => {
     e.preventDefault()
     const csrfToken = document.querySelector('[name=csrf-token]').content
-    console.log(csrfToken)
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
     const airline_id = airline.data.id
     axios.post('/api/v1/reviews', { review, airline_id })
@@ -67,13 +67,25 @@ const Airline = (props) => {
         setAirline([...airline, included])
         setReview({ title: '', description: '', score: 0 })
       })
-      .catch(resp => { })
+      .catch(resp => {})
   }
 
   // set score
   const setRating = (score, e) => {
     e.preventDefault()
     setReview({ ...review, score })
+  }
+
+  // destroy review
+  const handleDestroy = (id, e) => {
+    e.preventDefault()
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+    axios.delete(`/api/v1/reviews/${id}`)
+    .then( (data) => {
+      alert('Review deleted successfully')
+    })
+    .catch( data => {} )
   }
 
   let airlineReviews
@@ -84,6 +96,7 @@ const Airline = (props) => {
           key={index}
           id={review.id}
           attributes={review.attributes}
+          handleDestroy = {handleDestroy}
         />
       )
     })

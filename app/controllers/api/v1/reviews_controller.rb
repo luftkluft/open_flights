@@ -16,7 +16,8 @@ module Api
 
       # DELETE /api/v1/reviews/:id
       def destroy
-        review = current_user.reviews.find(params[:id])
+        # REVIEW: = current_user.reviews.find(params[:id])
+        review = Review.find(params[:id])
 
         if review.destroy
           head :no_content
