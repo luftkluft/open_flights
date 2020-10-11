@@ -32,22 +32,22 @@ const Column = styled.div`
 const Main = styled.div`
   padding-left: 60px;
 `
-
-
 const Airline = (props) => {
   const [airline, setAirline] = useState({})
   const [review, setReview] = useState({})
   const [loaded, setLoaded] = useState(false)
+  const [slugState, setSlugState] = useState('')
 
   useEffect(() => {
     const slug = props.match.params.slug
     const url = `/api/v1/airlines/${slug}`
+    setSlugState(slug)
     axios.get(url)
       .then(resp => {
         setAirline(resp.data)
         setLoaded(true)
       })
-      .catch(resp => console.log(resp))
+      .catch(resp => console.log('Error', resp))
   }, [])
 
   const handleChange = (e) => {
@@ -67,7 +67,8 @@ const Airline = (props) => {
         setAirline([...airline, included])
         setReview({ title: '', description: '', score: 0 })
       })
-      .catch(resp => {})
+      .catch(resp => console.log('Error', resp))
+    location.href = `/airlines/${slugState}`
   }
 
   // set score
@@ -82,10 +83,10 @@ const Airline = (props) => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
     axios.delete(`/api/v1/reviews/${id}`)
-    .then( (data) => {
-      alert('Review deleted successfully')
-    })
-    .catch( data => {} )
+      .then((resp) => {
+        location.href = `/airlines/${slugState}`
+      })
+      .catch(data => console.log('Error', resp))
   }
 
   let airlineReviews
@@ -96,7 +97,7 @@ const Airline = (props) => {
           key={index}
           id={review.id}
           attributes={review.attributes}
-          handleDestroy = {handleDestroy}
+          handleDestroy={handleDestroy}
         />
       )
     })
